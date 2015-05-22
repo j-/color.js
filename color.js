@@ -1,5 +1,7 @@
 (function (root) {
 
+/* jshint esnext:true */
+
 'use strict';
 
 /**
@@ -287,17 +289,17 @@ Color.parse = function (input) {
 	var value;
 	input = String(input);
 	value = Color.parseKeyword(input);
-	if (value !== null) { return value };
+	if (value !== null) { return value; }
 	value = Color.parseHexString(input);
-	if (value !== null) { return value };
+	if (value !== null) { return value; }
 	value = Color.parseRGBString(input);
-	if (value !== null) { return value };
+	if (value !== null) { return value; }
 	value = Color.parseRGBAString(input);
-	if (value !== null) { return value };
+	if (value !== null) { return value; }
 	value = Color.parseHSLString(input);
-	if (value !== null) { return value };
+	if (value !== null) { return value; }
 	value = Color.parseHSLAString(input);
-	if (value !== null) { return value };
+	if (value !== null) { return value; }
 	return null;
 };
 
