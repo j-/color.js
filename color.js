@@ -949,7 +949,7 @@ Color.prototype.toString = function () {
  * @return {Color} Clone
  */
 Color.prototype.clone = function () {
-	return Color(this);
+	return new Color(this);
 };
 
 if (Object.freeze) {
