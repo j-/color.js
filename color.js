@@ -8,7 +8,7 @@
  * Module for processing and manipulating colors. Accepts numeric and string
  *   values. Any valid CSS color will be parsed. Can be constructed without the
  *   "new" keyword.
- * @param {Number|String} input Color value. Will be parsed by Color.parse.
+ * @param {Number|String|Color} input Color value, parsed by Color.parse.
  * @module Color
  * @class
  */
@@ -286,7 +286,7 @@ Color.KEYWORDS = {
 /**
  * Parse any color input value. Can be a number or hex, RGB or HSL string.
  * @memberOf Color
- * @param {Number|String} input Input value
+ * @param {Number|String|Color} input Input value
  * @return {?Number} Numeric value between 0 and 0xffffff. Null if invalid.
  */
 Color.parse = function (input) {
@@ -600,7 +600,7 @@ Color.shortHexToLong = function (input) {
 /**
  * Clamp a color between 0 and 0xffffff.
  * @memberOf Color
- * @param {Number} input Input value
+ * @param {Number|Color} input Input value
  * @return {Number} Numeric value between 0 and 0xffffff
  */
 Color.clamp = function (input) {
@@ -650,7 +650,7 @@ Color.random = function () {
 /**
  * Get the value of the red channel of a color.
  * @memberOf Color
- * @input {Number|String} input Input color
+ * @input {Number|String|Color} input Input color
  * @return {Number} Channel value between 0 and 0xff
  */
 Color.getRed = function (input) {
@@ -662,7 +662,7 @@ Color.getRed = function (input) {
 /**
  * Get the value of the green channel of a color.
  * @memberOf Color
- * @input {Number|String} input Input color
+ * @input {Number|String|Color} input Input color
  * @return {Number} Channel value between 0 and 0xff
  */
 Color.getGreen = function (input) {
@@ -674,7 +674,7 @@ Color.getGreen = function (input) {
 /**
  * Get the value of the blue channel of a color.
  * @memberOf Color
- * @input {Number|String} input Input color
+ * @input {Number|String|Color} input Input color
  * @return {Number} Channel value between 0 and 0xff
  */
 Color.getBlue = function (input) {
@@ -687,7 +687,7 @@ Color.getBlue = function (input) {
  * Get the red, green and blue channel values of a color in an array. Each
  *   channel will be in the range 0 to 0xff.
  * @memberOf Color
- * @input {Number|String} input Input color
+ * @input {Number|String|Color} input Input color
  * @return {Number[]} RGB color array
  */
 Color.getRGBArray = function (input) {
@@ -704,7 +704,7 @@ Color.getRGBArray = function (input) {
  *   value will be in the range 0 to 360. Both the saturation and lightness
  *   values will be between 0 and 1.
  * @memberOf Color
- * @input {Number|String} input Input color
+ * @input {Number|String|Color} input Input color
  * @return {Number[]} HSL color array
  */
 Color.getHSLArray = function (input) {
@@ -714,7 +714,7 @@ Color.getHSLArray = function (input) {
 /**
  * Get the value of the hue channel of a color.
  * @memberOf Color
- * @input {Number|String} input Input color
+ * @input {Number|String|Color} input Input color
  * @return {Number} Hue value between 0 and 360
  */
 Color.getHue = function (input) {
@@ -750,7 +750,7 @@ Color.getHue = function (input) {
 /**
  * Get the value of the saturation channel of a color.
  * @memberOf Color
- * @input {Number|String} input Input color
+ * @input {Number|String|Color} input Input color
  * @return {Number} Saturation value between 0 and 1
  */
 Color.getSaturation = function (input) {
@@ -775,7 +775,7 @@ Color.getSaturation = function (input) {
 /**
  * Get the value of the lightness channel of a color.
  * @memberOf Color
- * @input {Number|String} input Input color
+ * @input {Number|String|Color} input Input color
  * @return {Number} Lightness value between 0 and 360
  */
 Color.getLightness = function (input) {
@@ -805,7 +805,7 @@ Color.formatHexByte = function (input) {
 /**
  * Format a color as a hexadecimal string, zero padded, with a leading '#'.
  * @memberOf Color
- * @input {Number|String} input Input color
+ * @input {Number|String|Color} input Input color
  * @return {String} Hexadecimal string
  */
 Color.formatHexString = function (input) {
@@ -833,7 +833,7 @@ Color.formatShortHexByte = function (input) {
  * Format a color as a hexadecimal string, zero padded, with a leading '#'.
  *   The result will be a short hex string (e.g. '#f00').
  * @memberOf Color
- * @input {Number|String} input Input color
+ * @input {Number|String|Color} input Input color
  * @return {String} Hexadecimal string
  */
 Color.formatShortHexString = function (input) {
@@ -848,7 +848,7 @@ Color.formatShortHexString = function (input) {
 /**
  * Format a color as a RGB string.
  * @memberOf Color
- * @input {Number|String} input Input color
+ * @input {Number|String|Color} input Input color
  * @return {String} RGB string
  */
 Color.formatRGBString = function (input) {
@@ -864,7 +864,7 @@ Color.formatRGBString = function (input) {
 /**
  * Format a color as a RGBA string.
  * @memberOf Color
- * @input {Number|String} input Input color
+ * @input {Number|String|Color} input Input color
  * @input {Number|String} [alpha=1] Alpha value
  * @return {String} RGBA string
  */
@@ -883,7 +883,7 @@ Color.formatRGBAString = function (input, a) {
 /**
  * Format a color as a HSL string.
  * @memberOf Color
- * @input {Number|String} input Input color
+ * @input {Number|String|Color} input Input color
  * @return {String} HSL string
  */
 Color.formatHSLString = function (input) {
@@ -904,7 +904,7 @@ Color.formatHSLString = function (input) {
 /**
  * Format a color as a HSLA string.
  * @memberOf Color
- * @input {Number|String} input Input color
+ * @input {Number|String|Color} input Input color
  * @input {Number|String} [alpha=1] Alpha value
  * @return {String} HSLA string
  */
