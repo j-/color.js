@@ -925,6 +925,33 @@ Color.formatHSLAString = function (input, a) {
 	return result;
 };
 
+/**
+ * Get the numeric value of this color.
+ * @memberOf Color
+ * @return {Number} Numeric value
+ */
+Color.prototype.valueOf = function () {
+	return Number(this.value);
+};
+
+/**
+ * Get the string representation of this color.
+ * @memberOf Color
+ * @return {Number} RGBA string
+ */
+Color.prototype.toString = function () {
+	return Color.formatRGBAString(this);
+};
+
+/**
+ * Return a new instance of this color.
+ * @memberOf Color
+ * @return {Color} Clone
+ */
+Color.prototype.clone = function () {
+	return Color(this);
+};
+
 if (Object.freeze) {
 	Object.freeze(Color.KEYWORDS);
 	Object.freeze(Color);
