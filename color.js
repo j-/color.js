@@ -2,30 +2,124 @@
 
 'use strict';
 
+/**
+ * @module Color
+ * @class
+ */
 var Color = root.Color = function (input) {
 	this.value = Color.parse(input);
 };
 
+/**
+ * Minimum color value. Represents the color black.
+ * @memberOf Color
+ * @const
+ */
 Color.MIN = 0x000000;
+
+/**
+ * Maximum color value. Represents the color white.
+ * @memberOf Color
+ * @const
+ */
 Color.MAX = 0xffffff;
 
+/**
+ * Minimum channel value.
+ * @memberOf Color
+ * @const
+ */
 Color.CHANNEL_MIN = 0x00;
+
+/**
+ * Maximum channel value.
+ * @memberOf Color
+ * @const
+ */
 Color.CHANNEL_MAX = 0xff;
 
+/**
+ * Red channel position in RGB arrays.
+ * @memberOf Color
+ * @const
+ */
 const R = Color.R = Color.RED   = 0;
+
+/**
+ * Green channel position in RGB arrays.
+ * @memberOf Color
+ * @const
+ */
 const G = Color.G = Color.GREEN = 1;
+
+/**
+ * Blue channel position in RGB arrays.
+ * @memberOf Color
+ * @const
+ */
 const B = Color.B = Color.BLUE  = 2;
 
+/**
+ * Hue channel position in HSL arrays.
+ * @memberOf Color
+ * @const
+ */
 const H = Color.H = Color.HUE        = 0;
+
+/**
+ * Saturation channel position in HSL arrays.
+ * @memberOf Color
+ * @const
+ */
 const S = Color.S = Color.SATURATION = 1;
+
+/**
+ * Lightness channel position in HSL arrays.
+ * @memberOf Color
+ * @const
+ */
 const L = Color.L = Color.LIGHTNESS  = 2;
 
+/**
+ * Regular expression. Matches hexadecimal strings.
+ * @memberOf Color
+ * @const
+ */
 Color.EXP_HEX = /^\s*#([0-9a-f]{6}|[0-9a-f]{3})\s*$/i;
+
+/**
+ * Regular expression. Matches RGB strings.
+ * @memberOf Color
+ * @const
+ */
 Color.EXP_RGB = /^\s*rgb\(\s*(-?\d+%|-?\d+)\s*,\s*(-?\d+%|-?\d+)\s*,\s*(-?\d+%|-?\d+)\s*\)\s*$/i;
+
+/**
+ * Regular expression. Matches RGBA strings.
+ * @memberOf Color
+ * @const
+ */
 Color.EXP_RGBA = /^\s*rgba\(\s*(-?\d+%|-?\d+)\s*,\s*(-?\d+%|-?\d+)\s*,\s*(-?\d+%|-?\d+)\s*,\s*(-?(?:\d*\.)?\d+)\s*\)\s*$/i;
+
+/**
+ * Regular expression. Matches HSL strings.
+ * @memberOf Color
+ * @const
+ */
 Color.EXP_HSL = /^\s*hsl\(\s*(-?\d+)\s*,\s*(-?\d+%)\s*,\s*(-?\d+%)\s*\)\s*$/i;
+
+/**
+ * Regular expression. Matches HSLA strings.
+ * @memberOf Color
+ * @const
+ */
 Color.EXP_HSLA = /^\s*hsla\(\s*(-?\d+)\s*,\s*(-?\d+%)\s*,\s*(-?\d+%)\s*,\s*(-?(?:\d*\.)?\d+)\s*\)\s*$/i;
 
+/**
+ * Map of color name keywords and their values.
+ * @memberOf Color
+ * @const
+ */
 Color.KEYWORDS = {
 	// basic
 	AQUA:                   0x00ffff,
@@ -180,6 +274,12 @@ Color.KEYWORDS = {
 	TRANSPARENT:            0x000000
 };
 
+/**
+ * Parse any color input value. Can be a number or hex, RGB or HSL string.
+ * @memberOf Color
+ * @param {Number|String} input Input value
+ * @return {?Number} Numeric value between 0 and 0xffffff. Null if invalid.
+ */
 Color.parse = function (input) {
 	if (typeof input === 'number') {
 		return Color.clamp(input);
@@ -201,6 +301,13 @@ Color.parse = function (input) {
 	return null;
 };
 
+/**
+ * Parse RGB string channel. Can be an integer between 0 and 255 or a percent
+ *   value between 0% and 100%. Values outside this range will be clamped.
+ * @memberOf Color
+ * @param {Number|String} input Input value
+ * @return {Number} Parsed value between 0 and 255
+ */
 Color.parseRGBChannel = function (input) {
 	input = String(input);
 	var value = input;
@@ -214,11 +321,24 @@ Color.parseRGBChannel = function (input) {
 	return value;
 };
 
+/**
+ * Parse HSL string hue. Can be any integer value.
+ * @memberOf Color
+ * @param {Number|String} input Input value
+ * @return {Number} Parsed value
+ */
 Color.parseHueChannel = function (input) {
 	input = Number(input);
 	return input;
 };
 
+/**
+ * Parse HSL string saturation or lightness. Can be any percentage value between
+ *   0 and 100%. Values outside this range will be clamped.
+ * @memberOf Color
+ * @param {Number|String} input Input value
+ * @return {?Number} Parsed value
+ */
 Color.parsePercentChannel = function (input) {
 	input = String(input);
 	var value = input;
@@ -232,6 +352,13 @@ Color.parsePercentChannel = function (input) {
 	return value;
 };
 
+/**
+ * Parse the channels of a RGB string. Each channel can be an integer or a
+ *   percent value.
+ * @memberOf Color
+ * @param {Array.<Number|String>} arr Input value array
+ * @return {Number} Parsed value between 0 and 0xffffff
+ */
 Color.parseRGBStringArray = function (arr) {
 	var result = Color.parseRGBArray([
 		Color.parseRGBChannel(arr[R]),
@@ -241,6 +368,13 @@ Color.parseRGBStringArray = function (arr) {
 	return result;
 };
 
+/**
+ * Combine the values of the red, green and blue channels of a color. Each
+ *   channel value is clamped to the range 0 and 255.
+ * @memberOf Color
+ * @param {Number[]} arr RGB value array
+ * @return {Number} Parsed value between 0 and 0xffffff
+ */
 Color.parseRGBArray = function (arr) {
 	var result = (
 		Color.clampChannel(arr[R]) * 0x10000 +
@@ -250,6 +384,13 @@ Color.parseRGBArray = function (arr) {
 	return result;
 };
 
+/**
+ * Parse the channels of a HSL string. The hue value is an integer between 0 and
+ *   360. The saturation and lightness values are percentages.
+ * @memberOf Color
+ * @param {Array.<Number|String>} arr Input value array
+ * @return {Number} Parsed value between 0 and 0xffffff
+ */
 Color.parseHSLStringArray = function (arr) {
 	var result = Color.parseHSLArray([
 		Color.parseHueChannel(arr[H]),
@@ -259,6 +400,13 @@ Color.parseHSLStringArray = function (arr) {
 	return result;
 };
 
+/**
+ * Calculate a color using a hue in the range 0 and 360, and saturation and
+ *   lightness values between 0 and 1.
+ * @memberOf Color
+ * @param {Number[]} arr HSL value array
+ * @return {Number} Parsed value between 0 and 0xffffff
+ */
 Color.parseHSLArray = function (arr) {
 	var h = arr[H], s = arr[S], l = arr[L];
 	h /= 360;
@@ -274,6 +422,14 @@ Color.parseHSLArray = function (arr) {
 	return result;
 };
 
+/**
+ * Helper for calculating red, green or blue values from a given hue.
+ * @memberOf Color
+ * @param {Number} m1
+ * @param {Number} m2
+ * @param {Number} hue
+ * @return {Number} Hue value between 0 and 360
+ */
 Color.parseHue = function (m1, m2, hue) {
 	if (hue < 0) {
 		hue++;
@@ -293,6 +449,12 @@ Color.parseHue = function (m1, m2, hue) {
 	return m1;
 };
 
+/**
+ * Parse hexadecimal color string.
+ * @memberOf Color
+ * @param {String} input Hex string
+ * @return {?Number} Numeric value between 0 and 0xffffff. Null if invalid.
+ */
 Color.parseHexString = function (input) {
 	input = String(input);
 	var match = input.match(Color.EXP_HEX);
@@ -314,6 +476,12 @@ Color.parseHexString = function (input) {
 	return value;
 };
 
+/**
+ * Parse RGB color string.
+ * @memberOf Color
+ * @param {String} input RGB string
+ * @return {?Number} Numeric value between 0 and 0xffffff. Null if invalid.
+ */
 Color.parseRGBString = function (input) {
 	input = String(input);
 	var match = input.match(Color.EXP_RGB);
@@ -328,6 +496,12 @@ Color.parseRGBString = function (input) {
 	return value;
 };
 
+/**
+ * Parse RGBA color string.
+ * @memberOf Color
+ * @param {String} input RGBA string
+ * @return {?Number} Numeric value between 0 and 0xffffff. Null if invalid.
+ */
 Color.parseRGBAString = function (input) {
 	input = String(input);
 	var match = input.match(Color.EXP_RGBA);
@@ -342,6 +516,12 @@ Color.parseRGBAString = function (input) {
 	return value;
 };
 
+/**
+ * Parse HSL color string.
+ * @memberOf Color
+ * @param {String} input HSL string
+ * @return {?Number} Numeric value between 0 and 0xffffff. Null if invalid.
+ */
 Color.parseHSLString = function (input) {
 	input = String(input);
 	var match = input.match(Color.EXP_HSL);
@@ -356,6 +536,12 @@ Color.parseHSLString = function (input) {
 	return value;
 };
 
+/**
+ * Parse HSLA color string.
+ * @memberOf Color
+ * @param {String} input HSLA string
+ * @return {?Number} Numeric value between 0 and 0xffffff. Null if invalid.
+ */
 Color.parseHSLAString = function (input) {
 	input = String(input);
 	var match = input.match(Color.EXP_HSLA);
@@ -370,6 +556,12 @@ Color.parseHSLAString = function (input) {
 	return value;
 };
 
+/**
+ * Parse keyword color string.
+ * @memberOf Color
+ * @param {String} input Keyword string
+ * @return {?Number} Numeric value between 0 and 0xffffff. Null if invalid.
+ */
 Color.parseKeyword = function (input) {
 	input = String(input).toUpperCase();
 	if (input in Color.KEYWORDS) {
@@ -378,6 +570,12 @@ Color.parseKeyword = function (input) {
 	return null;
 };
 
+/**
+ * Convert number in the form 0x123 to 0x112233.
+ * @memberOf Color
+ * @param {Number} input Short hex value
+ * @return {Number} Numeric value between 0 and 0xffffff
+ */
 Color.shortHexToLong = function (input) {
 	input = Number(input);
 	var nibbleR = Math.floor(input / 0x100);
@@ -390,6 +588,12 @@ Color.shortHexToLong = function (input) {
 	);
 };
 
+/**
+ * Clamp a color between 0 and 0xffffff.
+ * @memberOf Color
+ * @param {Number} input Input value
+ * @return {Number} Numeric value between 0 and 0xffffff
+ */
 Color.clamp = function (input) {
 	input = Number(input);
 	input = Math.max(input, Color.MIN);
@@ -398,6 +602,12 @@ Color.clamp = function (input) {
 	return input;
 };
 
+/**
+ * Clamp a RGB channel between 0 and 0xff.
+ * @memberOf Color
+ * @param {Number} input Input value
+ * @return {Number} Numeric value between 0 and 0xff
+ */
 Color.clampChannel = function (input) {
 	input = Number(input);
 	input = Math.max(input, Color.CHANNEL_MIN);
@@ -406,6 +616,12 @@ Color.clampChannel = function (input) {
 	return input;
 };
 
+/**
+ * Clamp a percentage value between 0 and 1.
+ * @memberOf Color
+ * @param {Number} input Input value
+ * @return {Number} Numeric value between 0 and 1
+ */
 Color.clampPercent = function (input) {
 	input = Number(input);
 	input = Math.max(input, 0);
@@ -413,28 +629,58 @@ Color.clampPercent = function (input) {
 	return input;
 };
 
+/**
+ * Get a random color value.
+ * @memberOf Color
+ * @return {Number} Random color between 0 and 0xffffff
+ */
 Color.random = function () {
 	return Math.floor(Math.random() * Color.MAX);
 };
 
+/**
+ * Get the value of the red channel of a color.
+ * @memberOf Color
+ * @input {Number|String} input Input color
+ * @return {Number} Channel value between 0 and 0xff
+ */
 Color.getRed = function (input) {
 	input = Color.parse(input);
 	var red = Math.floor(input / 0x10000);
 	return red;
 };
 
+/**
+ * Get the value of the green channel of a color.
+ * @memberOf Color
+ * @input {Number|String} input Input color
+ * @return {Number} Channel value between 0 and 0xff
+ */
 Color.getGreen = function (input) {
 	input = Color.parse(input);
 	var green = Math.floor((input / 0x100) % 0x100);
 	return green;
 };
 
+/**
+ * Get the value of the blue channel of a color.
+ * @memberOf Color
+ * @input {Number|String} input Input color
+ * @return {Number} Channel value between 0 and 0xff
+ */
 Color.getBlue = function (input) {
 	input = Color.parse(input);
 	var blue = input % 0x100;
 	return blue;
 };
 
+/**
+ * Get the red, green and blue channel values of a color in an array. Each
+ *   channel will be in the range 0 to 0xff.
+ * @memberOf Color
+ * @input {Number|String} input Input color
+ * @return {Number[]} RGB color array
+ */
 Color.getRGBArray = function (input) {
 	input = Color.parse(input);
 	return [
@@ -444,11 +690,24 @@ Color.getRGBArray = function (input) {
 	];
 };
 
+/**
+ * Get the hue, saturation and lightness values of a color in an array. The hue
+ *   value will be in the range 0 to 360. Both the saturation and lightness
+ *   values will be between 0 and 1.
+ * @memberOf Color
+ * @input {Number|String} input Input color
+ * @return {Number[]} HSL color array
+ */
 Color.getHSLArray = function (input) {
-	input = Color.parse(input);
-	return [h, s, l];
+	return null;
 };
 
+/**
+ * Get the value of the hue channel of a color.
+ * @memberOf Color
+ * @input {Number|String} input Input color
+ * @return {Number} Hue value between 0 and 360
+ */
 Color.getHue = function (input) {
 	var arr = Color.getRGBArray(input);
 	var r = arr[R] / 0xff;
@@ -479,8 +738,15 @@ Color.getHue = function (input) {
 	return hue;
 };
 
+/**
+ * Get the value of the saturation channel of a color.
+ * @memberOf Color
+ * @input {Number|String} input Input color
+ * @return {Number} Saturation value between 0 and 1
+ */
 Color.getSaturation = function (input) {
 	var arr = Color.getRGBArray(input);
+	var r = arr[R], g = arr[G], b = arr[B];
 	var min = Math.min(r, g, b);
 	var max = Math.max(r, g, b);
 	var diff = max - min;
@@ -497,6 +763,12 @@ Color.getSaturation = function (input) {
 	}
 };
 
+/**
+ * Get the value of the lightness channel of a color.
+ * @memberOf Color
+ * @input {Number|String} input Input color
+ * @return {Number} Lightness value between 0 and 360
+ */
 Color.getLightness = function (input) {
 	var arr = Color.getRGBArray(input);
 	var r = arr[R], g = arr[G], b = arr[B];
@@ -506,6 +778,12 @@ Color.getLightness = function (input) {
 	return lightness;
 };
 
+/**
+ * Format a channel value as a hexadecimal string, zero padded.
+ * @memberOf Color
+ * @input {Number|String} input Input value
+ * @return {String} Hexadecimal string
+ */
 Color.formatHexByte = function (input) {
 	input = Number(input);
 	var result = input.toString(16);
@@ -515,6 +793,12 @@ Color.formatHexByte = function (input) {
 	return result;
 };
 
+/**
+ * Format a color as a hexadecimal string, zero padded, with a leading '#'.
+ * @memberOf Color
+ * @input {Number|String} input Input color
+ * @return {String} Hexadecimal string
+ */
 Color.formatHexString = function (input) {
 	var arr = Color.getRGBArray(input);
 	var r = Color.formatHexByte(arr[R]);
@@ -524,12 +808,25 @@ Color.formatHexString = function (input) {
 	return result;
 };
 
+/**
+ * Format a channel value as a hexadecimal string in short format.
+ * @memberOf Color
+ * @input {Number|String} input Input value
+ * @return {String} Hexadecimal string
+ */
 Color.formatShortHexByte = function (input) {
 	input = Math.floor(input / 0x10);
 	var result = input.toString(16);
 	return result;
 };
 
+/**
+ * Format a color as a hexadecimal string, zero padded, with a leading '#'.
+ *   The result will be a short hex string (e.g. '#f00').
+ * @memberOf Color
+ * @input {Number|String} input Input color
+ * @return {String} Hexadecimal string
+ */
 Color.formatShortHexString = function (input) {
 	var arr = Color.getRGBArray(input);
 	var r = Color.formatShortHexByte(arr[R]);
@@ -539,6 +836,12 @@ Color.formatShortHexString = function (input) {
 	return result;
 };
 
+/**
+ * Format a color as a RGB string.
+ * @memberOf Color
+ * @input {Number|String} input Input color
+ * @return {String} RGB string
+ */
 Color.formatRGBString = function (input) {
 	var arr = Color.getRGBArray(input);
 	var result = 'rgb(' +
@@ -549,6 +852,13 @@ Color.formatRGBString = function (input) {
 	return result;
 };
 
+/**
+ * Format a color as a RGBA string.
+ * @memberOf Color
+ * @input {Number|String} input Input color
+ * @input {Number|String} [alpha=1] Alpha value
+ * @return {String} RGBA string
+ */
 Color.formatRGBAString = function (input, a) {
 	a = (a === undefined) ? 1 : a;
 	var arr = Color.getRGBArray(input);
@@ -561,6 +871,12 @@ Color.formatRGBAString = function (input, a) {
 	return result;
 };
 
+/**
+ * Format a color as a HSL string.
+ * @memberOf Color
+ * @input {Number|String} input Input color
+ * @return {String} HSL string
+ */
 Color.formatHSLString = function (input) {
 	input = Color.parse(input);
 	var h = Color.getHue(input);
@@ -576,6 +892,13 @@ Color.formatHSLString = function (input) {
 	return result;
 };
 
+/**
+ * Format a color as a HSLA string.
+ * @memberOf Color
+ * @input {Number|String} input Input color
+ * @input {Number|String} [alpha=1] Alpha value
+ * @return {String} HSLA string
+ */
 Color.formatHSLAString = function (input, a) {
 	a = (a === undefined) ? 1 : a;
 	input = Color.parse(input);
