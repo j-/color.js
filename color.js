@@ -5,6 +5,10 @@
 'use strict';
 
 /**
+ * Module for processing and manipulating colors. Accepts numeric and string
+ *   values. Any valid CSS color will be parsed. Can be constructed without the
+ *   "new" keyword.
+ * @param {Number|String} input Color value. Will be parsed by Color.parse.
  * @module Color
  * @class
  */
