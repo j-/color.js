@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<title>Icon generator</title>
+
+<script>
+
+var draw = function (ctx, width, height) {
+	ctx.save();
+	// create rainbow gradient
+	var hue = ctx.createLinearGradient(0, 0, width, 0);
+	for (var i = 0; i <= 360; i++) {
+		hue.addColorStop(i / 360, 'hsl(' + i + ', 100%, 50%)');
+	}
+	// apply gradient
+	ctx.fillStyle = hue;
+	ctx.fillRect(0, 0, width, height);
+	// create black/white gradient
+	var lightness = ctx.createLinearGradient(0, 0, 0, height);
+	lightness.addColorStop(0.0, 'rgba(100%, 100%, 100%, 1)');
+	lightness.addColorStop(0.5, 'rgba(100%, 100%, 100%, 0)');
+	lightness.addColorStop(0.5, 'rgba(  0%,   0%,   0%, 0)');
+	lightness.addColorStop(1.0, 'rgba(  0%,   0%,   0%, 1)');
+	// apply gradient
+	ctx.fillStyle = lightness;
+	ctx.fillRect(0, 0, width, height);
+	// undo changes
+	ctx.restore();
+};
+
+var icon = function (size) {
+	var canvas = document.createElement('canvas');
+	canvas.width = canvas.height = size;
+	var ctx = canvas.getContext('2d');
+	draw(ctx, size, size);
+	return canvas;
+};
+
+var img = function (icon) {
+	var result = new Image();
+	result.src = icon.toDataURL();
+	return result;
+};
+
+var favicon = document.createElement('link');
+favicon.rel = 'icon';
+favicon.href = icon(16).toDataURL();
+
+var sizes = [16, 32, 57, 72, 96, 120, 128, 144, 152, 195, 228];
+
+document.addEventListener('DOMContentLoaded', function () {
+	document.head.appendChild(favicon);
+	sizes.forEach(function (size) {
+		var container = document.createElement('div');
+		var header = document.createElement('h3');
+		header.appendChild(document.createTextNode(size));
+		container.appendChild(header);
+		var image = img(icon(size));
+		container.appendChild(image);
+		document.body.appendChild(container);
+	});
+});
+
+</script>
+
+<h1>Icon sizes</h1>
