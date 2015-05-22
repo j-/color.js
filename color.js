@@ -9,6 +9,9 @@
  * @class
  */
 var Color = root.Color = function (input) {
+	if (!(this instanceof Color)) {
+		return new Color(input);
+	}
 	this.value = Color.parse(input);
 };
 
