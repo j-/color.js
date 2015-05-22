@@ -290,7 +290,7 @@ Color.KEYWORDS = {
  * @return {?Number} Numeric value between 0 and 0xffffff. Null if invalid.
  */
 Color.parse = function (input) {
-	if (typeof input === 'number') {
+	if (!isNaN(input)) {
 		return Color.clamp(input);
 	}
 	var value;
