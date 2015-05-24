@@ -256,6 +256,7 @@ Color.KEYWORDS = {
 	PINK:                   0xffc0cb,
 	PLUM:                   0xdda0dd,
 	POWDERBLUE:             0xb0e0e6,
+	REBECCAPURPLE:          0x993366,
 	ROSYBROWN:              0xbc8f8f,
 	ROYALBLUE:              0x4169e1,
 	SADDLEBROWN:            0x8b4513,
