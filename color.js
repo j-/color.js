@@ -953,9 +953,15 @@ Color.prototype.clone = function () {
 	return new Color(this);
 };
 
-if (Object.freeze) {
-	Object.freeze(Color.KEYWORDS);
-	Object.freeze(Color);
+if (Object.defineProperties) {
+	Object.defineProperties(Color, {
+		R: { value: R, writable: false },
+		G: { value: G, writable: false },
+		B: { value: B, writable: false },
+		H: { value: H, writable: false },
+		S: { value: S, writable: false },
+		L: { value: L, writable: false }
+	});
 }
 
 })(this);
