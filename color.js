@@ -313,6 +313,7 @@ Color.parse = function (input) {
 
 /**
  * Determine if an input color is valid. The input can be a number or string.
+ * @memberOf Color
  * @param {Number|String|Color} input Color to test
  * @return {Boolean} True if valid, false otherwise
  */
