@@ -892,8 +892,9 @@ Color.formatHSLString = function (input) {
 	var h = Color.getHue(input);
 	var s = Color.getSaturation(input);
 	var l = Color.getLightness(input);
-	s = (s * 100) + '%';
-	l = (l * 100) + '%';
+	h = Math.round(h);
+	s = Math.round(s * 100) + '%';
+	l = Math.round(l * 100) + '%';
 	var result = 'hsl(' +
 		h + ', ' +
 		s + ', ' +
@@ -915,8 +916,9 @@ Color.formatHSLAString = function (input, a) {
 	var h = Color.getHue(input);
 	var s = Color.getSaturation(input);
 	var l = Color.getLightness(input);
-	s = (s * 100) + '%';
-	l = (l * 100) + '%';
+	h = Math.round(h);
+	s = Math.round(s * 100) + '%';
+	l = Math.round(l * 100) + '%';
 	var result = 'hsl(' +
 		h + ', ' +
 		s + ', ' +
