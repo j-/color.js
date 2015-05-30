@@ -312,6 +312,17 @@ Color.parse = function (input) {
 };
 
 /**
+ * Determine if an input color is valid. The input can be a number or string.
+ * @param {Number|String|Color} input Color to test
+ * @return {Boolean} True if valid, false otherwise
+ */
+Color.isValid = function (input) {
+	var value = Color.parse(input);
+	var isValid = value === null;
+	return isValid;
+};
+
+/**
  * Parse RGB string channel. Can be an integer between 0 and 255 or a percent
  *   value between 0% and 100%. Values outside this range will be clamped.
  * @memberOf Color
