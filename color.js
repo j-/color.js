@@ -890,9 +890,9 @@ Color.formatRGBAString = function (input, a) {
 Color.formatRGBPercentString = function (input) {
 	var arr = Color.getRGBArray(input);
 	var result = 'rgb(' +
-		Math.round(arr[R] / 0xff) + ', ' +
-		Math.round(arr[G] / 0xff) + ', ' +
-		Math.round(arr[B] / 0xff) +
+		Math.round(arr[R] / 0xff * 100) + '%, ' +
+		Math.round(arr[G] / 0xff * 100) + '%, ' +
+		Math.round(arr[B] / 0xff * 100) + '%' +
 	')';
 	return result;
 };
@@ -908,9 +908,9 @@ Color.formatRGBAPercentString = function (input, a) {
 	a = (a === undefined) ? 1 : a;
 	var arr = Color.getRGBArray(input);
 	var result = 'rgba(' +
-		Math.round(arr[R] / 0xff) + ', ' +
-		Math.round(arr[G] / 0xff) + ', ' +
-		Math.round(arr[B] / 0xff) + ', ' +
+		Math.round(arr[R] / 0xff * 100) + '%, ' +
+		Math.round(arr[G] / 0xff * 100) + '%, ' +
+		Math.round(arr[B] / 0xff * 100) + '%, ' +
 		a +
 	')';
 	return result;
