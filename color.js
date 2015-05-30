@@ -882,6 +882,41 @@ Color.formatRGBAString = function (input, a) {
 };
 
 /**
+ * Format a color as a RGB string using percentage values.
+ * @memberOf Color
+ * @input {Number|String|Color} input Input color
+ * @return {String} RGB percent string
+ */
+Color.formatRGBPercentString = function (input) {
+	var arr = Color.getRGBArray(input);
+	var result = 'rgb(' +
+		Math.round(arr[R] / 0xff) + ', ' +
+		Math.round(arr[G] / 0xff) + ', ' +
+		Math.round(arr[B] / 0xff) +
+	')';
+	return result;
+};
+
+/**
+ * Format a color as a RGBA string using percentage values.
+ * @memberOf Color
+ * @input {Number|String|Color} input Input color
+ * @input {Number|String} [alpha=1] Alpha value
+ * @return {String} RGBA percent string
+ */
+Color.formatRGBAPercentString = function (input, a) {
+	a = (a === undefined) ? 1 : a;
+	var arr = Color.getRGBArray(input);
+	var result = 'rgba(' +
+		Math.round(arr[R] / 0xff) + ', ' +
+		Math.round(arr[G] / 0xff) + ', ' +
+		Math.round(arr[B] / 0xff) + ', ' +
+		a +
+	')';
+	return result;
+};
+
+/**
  * Format a color as a HSL string.
  * @memberOf Color
  * @input {Number|String|Color} input Input color
