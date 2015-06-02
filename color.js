@@ -21,7 +21,7 @@ var def = function (obj, properties, value) {
 
 var min = Math.min, max = Math.max;
 var ceil = Math.ceil, floor = Math.floor, round = Math.round;
-var random = Math.random, pow = Math.pow;
+var random = Math.random, pow = Math.pow, sqrt = Math.sqrt;
 
 /**
  * Module for processing and manipulating colors. Accepts numeric and string
@@ -1084,6 +1084,39 @@ Color.equal = function (left, right) {
 	left = Color.parse(left);
 	right = Color.parse(right);
 	return left === right;
+};
+
+/**
+ * Calculate the squared value of the three-dimensional distance between two
+ *   colors in the RGB color space. Some calculations may only need the distance
+ *   as a ratio so this function optimizes by omitting the extra operation.
+ * @memberOf Color
+ * @param {Number|String|Color} left First color
+ * @param {Number|String|Color} right Second color
+ * @return {Number} Distance between two points, squared
+ */
+Color.distanceSquared = function (left, right) {
+	left = Color.getRGBArray(left);
+	right = Color.getRGBArray(right);
+	var total = 0;
+	total += pow(left[R] - right[R], 2);
+	total += pow(left[G] - right[G], 2);
+	total += pow(left[B] - right[B], 2);
+	return total;
+};
+
+/**
+ * Calculate the value of the three-dimensional distance between two colors in
+ *   the RGB color space. Two identical colors have no distance.
+ * @memberOf Color
+ * @param {Number|String|Color} left First color
+ * @param {Number|String|Color} right Second color
+ * @return {Number} Distance between two points, squared
+ */
+Color.distance = function (left, right) {
+	var squared = Color.distanceSquared(left, right);
+	var result = sqrt(squared);
+	return result;
 };
 
 /**
