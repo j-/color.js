@@ -1070,6 +1070,18 @@ Color.normalizeChannel = function (input) {
 };
 
 /**
+ * Determine if two colors are equal. Does not compare alpha values.
+ * @param {Number|String|Color} left First color
+ * @param {Number|String|Color} right Second color
+ * @return {Boolean} Colors are equal
+ */
+Color.equal = function (left, right) {
+	left = Color.parse(left);
+	right = Color.parse(right);
+	return left === right;
+};
+
+/**
  * Get the numeric value of this color.
  * @memberOf Color
  * @return {Number} Numeric value
@@ -1094,6 +1106,16 @@ Color.prototype.toString = function () {
  */
 Color.prototype.clone = function () {
 	return new Color(this);
+};
+
+/**
+ * Compare this color to another.
+ * @memberOf Color
+ * @param {Number|String|Color} other Color to compare with
+ * @return {Boolean} Colors are equal
+ */
+Color.prototype.equals = function (other) {
+	return Color.equal(this, other);
 };
 
 })(this);
