@@ -823,6 +823,7 @@ Color.getLightness = function (input) {
 /**
  * The relative brightness of any point, normalized to 0 for darkest black and 1
  *   for lightest white.
+ * @memberOf Color
  * @see http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
  * @param {Number|String|Color} input Input color
  * @return {Number} Luminance value between 0 and 1;
@@ -841,6 +842,7 @@ Color.getLuminance = function (input) {
  * Contrast is the measure of how distinguishable two colors are. A higher
  *   contrast is easier to see. This function gets the contrast ratio of two
  *   input colors.
+ * @memberOf Color
  * @see http://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
  * @param {Number|String|Color} left First input color
  * @param {Number|String|Color} right Second input color
@@ -1041,6 +1043,7 @@ Color.formatHSLAString = function (input, a) {
 
 /**
  * Get a color with all its channels inverted. For example, #f00 becomes #0ff.
+ * @memberOf Color
  * @param {Number|String|Color} input Input color
  * @return {Number} The inverted color value
  */
@@ -1052,6 +1055,7 @@ Color.invert = function (input) {
 
 /**
  * Return a full channel name from an input channel name or fragment thereof.
+ * @memberOf Color
  * @param {String} input Input string e.g. 'S', 'sat', 'Saturation' etc.
  * @return {?String} Full channel name e.g. 'red', 'hue', etc. or null.
  */
@@ -1071,6 +1075,7 @@ Color.normalizeChannel = function (input) {
 
 /**
  * Determine if two colors are equal. Does not compare alpha values.
+ * @memberOf Color
  * @param {Number|String|Color} left First color
  * @param {Number|String|Color} right Second color
  * @return {Boolean} Colors are equal
