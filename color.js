@@ -982,6 +982,17 @@ Color.formatHSLAString = function (input, a) {
 };
 
 /**
+ * Get a color with all its channels inverted. For example, #f00 becomes #0ff.
+ * @input {Number|String|Color} input Input color
+ * @return {Number} The inverted color value
+ */
+Color.invert = function (input) {
+	input = Color.parse(input);
+	var result = Color.MAX - input;
+	return result;
+};
+
+/**
  * Get the numeric value of this color.
  * @memberOf Color
  * @return {Number} Numeric value
