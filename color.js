@@ -926,7 +926,7 @@ Color.formatRGBPercentString = function (input) {
 	var result = 'rgb(' +
 		r + ', ' +
 		g + ', ' +
-		b
+		b +
 	')';
 	return result;
 };
