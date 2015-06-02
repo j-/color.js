@@ -19,6 +19,10 @@ var def = function (obj, properties, value) {
 	return value;
 };
 
+var min = Math.min, max = Math.max;
+var ceil = Math.ceil, floor = Math.floor, round = Math.round;
+var random = Math.random;
+
 /**
  * Module for processing and manipulating colors. Accepts numeric and string
  *   values. Any valid CSS color will be parsed. Can be constructed without the
@@ -615,8 +619,8 @@ Color.parseKeyword = function (input) {
  */
 Color.shortHexToLong = function (input) {
 	input = Number(input);
-	var nibbleR = Math.floor(input / 0x100);
-	var nibbleG = Math.floor(input / 0x10) % 0x10;
+	var nibbleR = floor(input / 0x100);
+	var nibbleG = floor(input / 0x10) % 0x10;
 	var nibbleB = input % 0x10;
 	return (
 		nibbleR * 0x110000 +
@@ -633,9 +637,9 @@ Color.shortHexToLong = function (input) {
  */
 Color.clamp = function (input) {
 	input = Number(input);
-	input = Math.max(input, MIN);
-	input = Math.min(input, MAX);
-	input = Math.floor(input);
+	input = max(input, MIN);
+	input = min(input, MAX);
+	input = floor(input);
 	return input;
 };
 
@@ -647,9 +651,9 @@ Color.clamp = function (input) {
  */
 Color.clampChannel = function (input) {
 	input = Number(input);
-	input = Math.max(input, CHANNEL_MIN);
-	input = Math.min(input, CHANNEL_MAX);
-	input = Math.floor(input);
+	input = max(input, CHANNEL_MIN);
+	input = min(input, CHANNEL_MAX);
+	input = floor(input);
 	return input;
 };
 
@@ -661,8 +665,8 @@ Color.clampChannel = function (input) {
  */
 Color.clampPercent = function (input) {
 	input = Number(input);
-	input = Math.max(input, 0);
-	input = Math.min(input, 1);
+	input = max(input, 0);
+	input = min(input, 1);
 	return input;
 };
 
@@ -672,7 +676,7 @@ Color.clampPercent = function (input) {
  * @return {Number} Random color between 0 and 0xffffff
  */
 Color.random = function () {
-	return Math.floor(Math.random() * MAX);
+	return floor(random() * MAX);
 };
 
 /**
@@ -683,7 +687,7 @@ Color.random = function () {
  */
 Color.getRed = function (input) {
 	input = Color.parse(input);
-	var red = Math.floor(input / 0x10000);
+	var red = floor(input / 0x10000);
 	return red;
 };
 
@@ -695,7 +699,7 @@ Color.getRed = function (input) {
  */
 Color.getGreen = function (input) {
 	input = Color.parse(input);
-	var green = Math.floor((input / 0x100) % 0x100);
+	var green = floor((input / 0x100) % 0x100);
 	return green;
 };
 
@@ -721,8 +725,8 @@ Color.getBlue = function (input) {
 Color.getRGBArray = function (input) {
 	input = Color.parse(input);
 	return [
-		Math.floor(input / 0x10000),
-		Math.floor((input / 0x100) % 0x100),
+		floor(input / 0x10000),
+		floor((input / 0x100) % 0x100),
 		input % 0x100
 	];
 };
@@ -750,8 +754,8 @@ Color.getHue = function (input) {
 	var r = arr[R] / CHANNEL_MAX;
 	var g = arr[G] / CHANNEL_MAX;
 	var b = arr[B] / CHANNEL_MAX;
-	var min = Math.min(r, g, b);
-	var max = Math.max(r, g, b);
+	var min = min(r, g, b);
+	var max = max(r, g, b);
 	var diff, hue;
 	if (max === min) {
 		return 0;
@@ -784,8 +788,8 @@ Color.getHue = function (input) {
 Color.getSaturation = function (input) {
 	var arr = Color.getRGBArray(input);
 	var r = arr[R], g = arr[G], b = arr[B];
-	var min = Math.min(r, g, b);
-	var max = Math.max(r, g, b);
+	var min = min(r, g, b);
+	var max = max(r, g, b);
 	var diff = max - min;
 	if (diff === 0) {
 		return 0;
@@ -809,8 +813,8 @@ Color.getSaturation = function (input) {
 Color.getLightness = function (input) {
 	var arr = Color.getRGBArray(input);
 	var r = arr[R], g = arr[G], b = arr[B];
-	var min = Math.min(r, g, b);
-	var max = Math.max(r, g, b);
+	var min = min(r, g, b);
+	var max = max(r, g, b);
 	var lightness = (max + min) / 2 / CHANNEL_MAX;
 	return lightness;
 };
@@ -852,7 +856,7 @@ Color.formatHexString = function (input) {
  * @return {String} Hexadecimal string
  */
 Color.formatShortHexByte = function (input) {
-	input = Math.floor(input / 0x10);
+	input = floor(input / 0x10);
 	var result = input.toString(16);
 	return result;
 };
@@ -916,9 +920,9 @@ Color.formatRGBAString = function (input, a) {
  */
 Color.formatRGBPercentString = function (input) {
 	var arr = Color.getRGBArray(input);
-	var r = Math.round(arr[R] / CHANNEL_MAX * 100) + '%';
-	var g = Math.round(arr[G] / CHANNEL_MAX * 100) + '%';
-	var b = Math.round(arr[B] / CHANNEL_MAX * 100) + '%';
+	var r = round(arr[R] / CHANNEL_MAX * 100) + '%';
+	var g = round(arr[G] / CHANNEL_MAX * 100) + '%';
+	var b = round(arr[B] / CHANNEL_MAX * 100) + '%';
 	var result = 'rgb(' +
 		r + ', ' +
 		g + ', ' +
@@ -937,9 +941,9 @@ Color.formatRGBPercentString = function (input) {
 Color.formatRGBAPercentString = function (input, a) {
 	a = (a === undefined) ? 1 : a;
 	var arr = Color.getRGBArray(input);
-	var r = Math.round(arr[R] / CHANNEL_MAX * 100) + '%';
-	var g = Math.round(arr[G] / CHANNEL_MAX * 100) + '%';
-	var b = Math.round(arr[B] / CHANNEL_MAX * 100) + '%';
+	var r = round(arr[R] / CHANNEL_MAX * 100) + '%';
+	var g = round(arr[G] / CHANNEL_MAX * 100) + '%';
+	var b = round(arr[B] / CHANNEL_MAX * 100) + '%';
 	var result = 'rgba(' +
 		r + ', ' +
 		g + ', ' +
@@ -960,9 +964,9 @@ Color.formatHSLString = function (input) {
 	var h = Color.getHue(input);
 	var s = Color.getSaturation(input);
 	var l = Color.getLightness(input);
-	h = Math.round(h);
-	s = Math.round(s * 100) + '%';
-	l = Math.round(l * 100) + '%';
+	h = round(h);
+	s = round(s * 100) + '%';
+	l = round(l * 100) + '%';
 	var result = 'hsl(' +
 		h + ', ' +
 		s + ', ' +
@@ -984,9 +988,9 @@ Color.formatHSLAString = function (input, a) {
 	var h = Color.getHue(input);
 	var s = Color.getSaturation(input);
 	var l = Color.getLightness(input);
-	h = Math.round(h);
-	s = Math.round(s * 100) + '%';
-	l = Math.round(l * 100) + '%';
+	h = round(h);
+	s = round(s * 100) + '%';
+	l = round(l * 100) + '%';
 	var result = 'hsl(' +
 		h + ', ' +
 		s + ', ' +
