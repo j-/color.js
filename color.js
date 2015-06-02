@@ -861,6 +861,45 @@ Color.getContrastRatio = function (left, right) {
 };
 
 /**
+ * Check if a color can be considered 'light' in the YIQ color space.
+ * @memberOf Color
+ * @see http://24ways.org/2010/calculating-color-contrast
+ * @param {Number|String|Color} input Input color
+ * @return {Boolean} True if input is light
+ */
+Color.isLight = function (input) {
+	var arr = Color.getRGBArray(input);
+	var r = arr[R], g = arr[G], b = arr[B];
+	var yiq1000 = 299 * r + 587 * g + 114 * b;
+	var result = yiq1000 >= 128000;
+	return result;
+};
+
+/**
+ * Check if a color can be considered 'dark' in the YIQ color space.
+ * @memberOf Color
+ * @see http://24ways.org/2010/calculating-color-contrast
+ * @param {Number|String|Color} input Input color
+ * @return {Boolean} True if input is dark
+ */
+Color.isDark = function (input) {
+	return !Color.isLight(input);
+};
+
+/**
+ * Get the value of either black or white which most contrasts with the input.
+ * @memberOf Color
+ * @see http://24ways.org/2010/calculating-color-contrast
+ * @param {Number|String|Color} input Input color
+ * @return {Number} Value of contrasting color (Color.MIN or Color.MAX)
+ */
+Color.getContrastingColor = function (input) {
+	var isLight = Color.isLight(input);
+	var result = isLight ? MIN : MAX;
+	return result;
+};
+
+/**
  * Format a channel value as a hexadecimal string, zero padded.
  * @memberOf Color
  * @param {Number|String} input Input value
