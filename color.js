@@ -754,14 +754,14 @@ Color.getHue = function (input) {
 	var r = arr[R] / CHANNEL_MAX;
 	var g = arr[G] / CHANNEL_MAX;
 	var b = arr[B] / CHANNEL_MAX;
-	var min = min(r, g, b);
-	var max = max(r, g, b);
+	var minValue = min(r, g, b);
+	var maxValue = max(r, g, b);
 	var diff, hue;
-	if (max === min) {
+	if (maxValue === minValue) {
 		return 0;
 	}
-	diff = max - min;
-	switch (max) {
+	diff = maxValue - minValue;
+	switch (maxValue) {
 		case r:
 			hue = (g - b) / diff;
 			break;
@@ -788,16 +788,16 @@ Color.getHue = function (input) {
 Color.getSaturation = function (input) {
 	var arr = Color.getRGBArray(input);
 	var r = arr[R], g = arr[G], b = arr[B];
-	var min = min(r, g, b);
-	var max = max(r, g, b);
-	var diff = max - min;
+	var minValue = min(r, g, b);
+	var maxValue = max(r, g, b);
+	var diff = maxValue - minValue;
 	if (diff === 0) {
 		return 0;
 	}
-	var total = max + min;
+	var total = maxValue + minValue;
 	var lightness = total / 2;
 	if (lightness > 127.5) {
-		return diff / (510 - max - min);
+		return diff / (510 - maxValue - minValue);
 	}
 	else {
 		return diff / total;
@@ -813,9 +813,9 @@ Color.getSaturation = function (input) {
 Color.getLightness = function (input) {
 	var arr = Color.getRGBArray(input);
 	var r = arr[R], g = arr[G], b = arr[B];
-	var min = min(r, g, b);
-	var max = max(r, g, b);
-	var lightness = (max + min) / 2 / CHANNEL_MAX;
+	var minValue = min(r, g, b);
+	var maxValue = max(r, g, b);
+	var lightness = (maxValue + minValue) / 2 / CHANNEL_MAX;
 	return lightness;
 };
 
