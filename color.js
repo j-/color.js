@@ -21,7 +21,7 @@ var def = function (obj, properties, value) {
 
 var min = Math.min, max = Math.max;
 var ceil = Math.ceil, floor = Math.floor, round = Math.round;
-var random = Math.random;
+var random = Math.random, pow = Math.pow;
 
 /**
  * Module for processing and manipulating colors. Accepts numeric and string
@@ -817,6 +817,23 @@ Color.getLightness = function (input) {
 	var max = max(r, g, b);
 	var lightness = (max + min) / 2 / CHANNEL_MAX;
 	return lightness;
+};
+
+/**
+ * The relative brightness of any point, normalized to 0 for darkest black and 1
+ *   for lightest white.
+ * @see http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
+ * @param {Number|String|Color} input Input color
+ * @return {Number} Luminance value between 0 and 1;
+ */
+Color.getLuminance = function (input) {
+	var arr = Color.getRGBArray(input);
+	var r = arr[R], g = arr[G], b = arr[B];
+	r = (r <= 0.03928) ? (r / 12.92) : pow(r + 0.055 / 1.055, 2.4);
+	g = (g <= 0.03928) ? (g / 12.92) : pow(g + 0.055 / 1.055, 2.4);
+	b = (b <= 0.03928) ? (b / 12.92) : pow(b + 0.055 / 1.055, 2.4);
+	var result = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+	return result;
 };
 
 /**
