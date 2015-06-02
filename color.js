@@ -837,6 +837,27 @@ Color.getLuminance = function (input) {
 };
 
 /**
+ * Contrast is the measure of how distinguishable two colors are. A higher
+ *   contrast is easier to see. This function gets the contrast ratio of two
+ *   input colors.
+ * @see http://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
+ * @param {Number|String|Color} left First input color
+ * @param {Number|String|Color} right Second input color
+ * @return {Number} Contrast ratio between 1 and 21 (commonly '1:1' to '21:1')
+ */
+Color.getContrastRatio = function (left, right) {
+	left = Color.getLuminance(left);
+	right = Color.getLuminance(right);
+	// lighter color is divided into darker color
+	if (left > right) {
+		return (left + 0.05) / (right + 0.05);
+	}
+	else {
+		return (right + 0.05) / (left + 0.05);
+	}
+};
+
+/**
  * Format a channel value as a hexadecimal string, zero padded.
  * @memberOf Color
  * @param {Number|String} input Input value
