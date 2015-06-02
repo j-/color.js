@@ -1012,6 +1012,25 @@ Color.invert = function (input) {
 };
 
 /**
+ * Return a full channel name from an input channel name or fragment thereof.
+ * @param {String} input Input string e.g. 'S', 'sat', 'Saturation' etc.
+ * @return {?String} Full channel name e.g. 'red', 'hue', etc. or null.
+ */
+Color.normalizeChannel = function (input) {
+	input = String(input);
+	var ch = input.charAt(0).toLowerCase();
+	switch (ch) {
+		case 'r': return 'red';
+		case 'g': return 'green';
+		case 'b': return 'blue';
+		case 'h': return 'hue';
+		case 's': return 'saturation';
+		case 'l': return 'lightness';
+	}
+	return null;
+};
+
+/**
  * Get the numeric value of this color.
  * @memberOf Color
  * @return {Number} Numeric value
