@@ -4,6 +4,21 @@
 
 'use strict';
 
+// Utility function.
+// Define read-only properties on an object.
+var def = function (obj, properties, value) {
+	if (typeof properties === 'string') {
+		properties = [properties];
+	}
+	properties.forEach(function (prop) {
+		Object.defineProperty(obj, prop, {
+			value: value,
+			writable: false
+		});
+	});
+	return value;
+};
+
 /**
  * Module for processing and manipulating colors. Accepts numeric and string
  *   values. Any valid CSS color will be parsed. Can be constructed without the
@@ -24,70 +39,70 @@ var Color = root.Color = function (input) {
  * @memberOf Color
  * @const
  */
-Color.MIN = 0x000000;
+const MIN = def(Color, 'MIN', 0x000000);
 
 /**
  * Maximum color value. Represents the color white.
  * @memberOf Color
  * @const
  */
-Color.MAX = 0xffffff;
+const MAX = def(Color, 'MAX', 0xffffff);
 
 /**
  * Minimum channel value.
  * @memberOf Color
  * @const
  */
-Color.CHANNEL_MIN = 0x00;
+const CHANNEL_MIN = def(Color, 'CHANNEL_MIN', 0x00);
 
 /**
  * Maximum channel value.
  * @memberOf Color
  * @const
  */
-Color.CHANNEL_MAX = 0xff;
+const CHANNEL_MAX = def(Color, 'CHANNEL_MAX', 0xff);
 
 /**
  * Red channel position in RGB arrays.
  * @memberOf Color
  * @const
  */
-const R = Color.R = Color.RED   = 0;
+const R = def(Color, ['R', 'RED'], 0);
 
 /**
  * Green channel position in RGB arrays.
  * @memberOf Color
  * @const
  */
-const G = Color.G = Color.GREEN = 1;
+const G = def(Color, ['G', 'GREEN'], 1);
 
 /**
  * Blue channel position in RGB arrays.
  * @memberOf Color
  * @const
  */
-const B = Color.B = Color.BLUE  = 2;
+const B = def(Color, ['B', 'BLUE'], 2);
 
 /**
  * Hue channel position in HSL arrays.
  * @memberOf Color
  * @const
  */
-const H = Color.H = Color.HUE        = 0;
+const H = def(Color, ['H', 'HUE'], 0);
 
 /**
  * Saturation channel position in HSL arrays.
  * @memberOf Color
  * @const
  */
-const S = Color.S = Color.SATURATION = 1;
+const S = def(Color, ['S', 'SATURATION'], 1);
 
 /**
  * Lightness channel position in HSL arrays.
  * @memberOf Color
  * @const
  */
-const L = Color.L = Color.LIGHTNESS  = 2;
+const L = def(Color, ['L', 'LIGHTNESS'], 2);
 
 /**
  * Regular expression. Matches hexadecimal strings.
@@ -618,8 +633,8 @@ Color.shortHexToLong = function (input) {
  */
 Color.clamp = function (input) {
 	input = Number(input);
-	input = Math.max(input, Color.MIN);
-	input = Math.min(input, Color.MAX);
+	input = Math.max(input, MIN);
+	input = Math.min(input, MAX);
 	input = Math.floor(input);
 	return input;
 };
@@ -632,8 +647,8 @@ Color.clamp = function (input) {
  */
 Color.clampChannel = function (input) {
 	input = Number(input);
-	input = Math.max(input, Color.CHANNEL_MIN);
-	input = Math.min(input, Color.CHANNEL_MAX);
+	input = Math.max(input, CHANNEL_MIN);
+	input = Math.min(input, CHANNEL_MAX);
 	input = Math.floor(input);
 	return input;
 };
@@ -657,7 +672,7 @@ Color.clampPercent = function (input) {
  * @return {Number} Random color between 0 and 0xffffff
  */
 Color.random = function () {
-	return Math.floor(Math.random() * Color.MAX);
+	return Math.floor(Math.random() * MAX);
 };
 
 /**
@@ -732,9 +747,9 @@ Color.getHSLArray = function (input) {
  */
 Color.getHue = function (input) {
 	var arr = Color.getRGBArray(input);
-	var r = arr[R] / 0xff;
-	var g = arr[G] / 0xff;
-	var b = arr[B] / 0xff;
+	var r = arr[R] / CHANNEL_MAX;
+	var g = arr[G] / CHANNEL_MAX;
+	var b = arr[B] / CHANNEL_MAX;
 	var min = Math.min(r, g, b);
 	var max = Math.max(r, g, b);
 	var diff, hue;
@@ -796,7 +811,7 @@ Color.getLightness = function (input) {
 	var r = arr[R], g = arr[G], b = arr[B];
 	var min = Math.min(r, g, b);
 	var max = Math.max(r, g, b);
-	var lightness = (max + min) / 2 / 0xff;
+	var lightness = (max + min) / 2 / CHANNEL_MAX;
 	return lightness;
 };
 
@@ -901,9 +916,9 @@ Color.formatRGBAString = function (input, a) {
  */
 Color.formatRGBPercentString = function (input) {
 	var arr = Color.getRGBArray(input);
-	var r = Math.round(arr[R] / 0xff * 100) + '%';
-	var g = Math.round(arr[G] / 0xff * 100) + '%';
-	var b = Math.round(arr[B] / 0xff * 100) + '%';
+	var r = Math.round(arr[R] / CHANNEL_MAX * 100) + '%';
+	var g = Math.round(arr[G] / CHANNEL_MAX * 100) + '%';
+	var b = Math.round(arr[B] / CHANNEL_MAX * 100) + '%';
 	var result = 'rgb(' +
 		r + ', ' +
 		g + ', ' +
@@ -922,9 +937,9 @@ Color.formatRGBPercentString = function (input) {
 Color.formatRGBAPercentString = function (input, a) {
 	a = (a === undefined) ? 1 : a;
 	var arr = Color.getRGBArray(input);
-	var r = Math.round(arr[R] / 0xff * 100) + '%';
-	var g = Math.round(arr[G] / 0xff * 100) + '%';
-	var b = Math.round(arr[B] / 0xff * 100) + '%';
+	var r = Math.round(arr[R] / CHANNEL_MAX * 100) + '%';
+	var g = Math.round(arr[G] / CHANNEL_MAX * 100) + '%';
+	var b = Math.round(arr[B] / CHANNEL_MAX * 100) + '%';
 	var result = 'rgba(' +
 		r + ', ' +
 		g + ', ' +
@@ -988,7 +1003,7 @@ Color.formatHSLAString = function (input, a) {
  */
 Color.invert = function (input) {
 	input = Color.parse(input);
-	var result = Color.MAX - input;
+	var result = MAX - input;
 	return result;
 };
 
@@ -1018,16 +1033,5 @@ Color.prototype.toString = function () {
 Color.prototype.clone = function () {
 	return new Color(this);
 };
-
-if (Object.defineProperties) {
-	Object.defineProperties(Color, {
-		R: { value: R, writable: false },
-		G: { value: G, writable: false },
-		B: { value: B, writable: false },
-		H: { value: H, writable: false },
-		S: { value: S, writable: false },
-		L: { value: L, writable: false }
-	});
-}
 
 })(this);
