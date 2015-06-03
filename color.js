@@ -865,13 +865,15 @@ Color.getContrastRatio = function (left, right) {
  * @memberOf Color
  * @see http://24ways.org/2010/calculating-color-contrast
  * @param {Number|String|Color} input Input color
+ * @param {Number} [threshold=0.5] Optional luminance threshold
  * @return {Boolean} True if input is light
  */
-Color.isLight = function (input) {
+Color.isLight = function (input, threshold) {
+	threshold = (threshold === undefined) ? 0.5 : threshold;
 	var arr = Color.getRGBArray(input);
 	var r = arr[R], g = arr[G], b = arr[B];
 	var yiq1000 = 299 * r + 587 * g + 114 * b;
-	var result = yiq1000 >= 128000;
+	var result = yiq1000 >= 256000 * threshold;
 	return result;
 };
 
@@ -880,10 +882,11 @@ Color.isLight = function (input) {
  * @memberOf Color
  * @see http://24ways.org/2010/calculating-color-contrast
  * @param {Number|String|Color} input Input color
+ * @param {Number} [threshold=0.5] Optional luminance threshold
  * @return {Boolean} True if input is dark
  */
-Color.isDark = function (input) {
-	return !Color.isLight(input);
+Color.isDark = function (input, threshold) {
+	return !Color.isLight(input, threshold);
 };
 
 /**
