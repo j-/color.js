@@ -741,7 +741,12 @@ Color.getRGBArray = function (input) {
  * @return {Number[]} HSL color array
  */
 Color.getHSLArray = function (input) {
-	return null;
+	input = Color.parse(input);
+	return [
+		Color.getHue(input),
+		Color.getSaturation(input),
+		Color.getLightness(input)
+	];
 };
 
 /**
