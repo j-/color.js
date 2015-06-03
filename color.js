@@ -762,16 +762,14 @@ Color.getHue = function (input) {
 		return 0;
 	}
 	diff = maxValue - minValue;
-	switch (maxValue) {
-		case r:
-			hue = (g - b) / diff;
-			break;
-		case g:
-			hue = 2 + (b - r) / diff;
-			break;
-		case b:
-			hue = 4 + (r - g) / diff;
-			break;
+	if (r === maxValue) {
+		hue = (g - b) / diff;
+	}
+	else if (g === maxValue) {
+		hue = 2 + (b - r) / diff;
+	}
+	else if (b === maxValue) {
+		hue = 4 + (r - g) / diff;
 	}
 	hue *= 60;
 	if (hue < 0) {
