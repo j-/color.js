@@ -110,6 +110,34 @@ const S = def(Color, ['S', 'SATURATION'], 1);
 const L = def(Color, ['L', 'LIGHTNESS'], 2);
 
 /**
+ * Cyan channel position in CMY/CMYK arrays.
+ * @memberOf Color
+ * @const
+ */
+const C = def(Color, ['C', 'CYAN'], 0);
+
+/**
+ * Magenta channel position in CMY/CMYK arrays.
+ * @memberOf Color
+ * @const
+ */
+const M = def(Color, ['M', 'MAGENTA'], 1);
+
+/**
+ * Yellow channel position in CMY/CMYK arrays.
+ * @memberOf Color
+ * @const
+ */
+const Y = def(Color, ['Y', 'YELLOW'], 2);
+
+/**
+ * Key channel position in CMYK arrays.
+ * @memberOf Color
+ * @const
+ */
+const K = def(Color, ['K', 'KEY'], 3);
+
+/**
  * Regular expression. Matches hexadecimal strings.
  * @memberOf Color
  * @const
@@ -756,7 +784,7 @@ Color.getCMYArray = function (input) {
  */
 Color.getCMYKArray = function (input) {
 	var arr = Color.getCMYArray(input);
-	var c = arr[0], m = arr[1], y = arr[2];
+	var c = arr[C], m = arr[M], y = arr[Y];
 	var k = min(c, m, y);
 	if (k === CHANNEL_MAX) {
 		c = m = y = 0;
