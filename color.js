@@ -641,6 +641,37 @@ Color.parseKeyword = function (input) {
 };
 
 /**
+ * Calculate a color using cyan, magenta and yellow values between 0 and 255.
+ * @memberOf Color
+ * @param {Number[]} arr CMY value array
+ * @return {Number} Parsed value between 0 and 0xffffff
+ */
+Color.parseCMYArray = function (arr) {
+	var c = arr[C], m = arr[M], y = arr[Y];
+	var r = CHANNEL_MAX - c;
+	var g = CHANNEL_MAX - m;
+	var b = CHANNEL_MAX - y;
+	var value = Color.parseRGBArray([r, g, b]);
+	return value;
+};
+
+/**
+ * Calculate a color using cyan, magenta, yellow and key values between 0 and
+ *   255.
+ * @memberOf Color
+ * @param {Number[]} arr CMYK value array
+ * @return {Number} Parsed value between 0 and 0xffffff
+ */
+Color.parseCMYKArray = function (arr) {
+	var c = arr[C], m = arr[M], y = arr[Y], k = arr[K];
+	c = c * (CHANNEL_MAX - k) + k;
+	m = m * (CHANNEL_MAX - k) + k;
+	y = y * (CHANNEL_MAX - k) + k;
+	var value = Color.parseCMYArray([c, m, y]);
+	return value;
+};
+
+/**
  * Convert number in the form 0x123 to 0x112233.
  * @memberOf Color
  * @param {Number} input Short hex value
