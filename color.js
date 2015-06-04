@@ -733,6 +733,43 @@ Color.getRGBArray = function (input) {
 };
 
 /**
+ * Get the cyan, magenta and yellow channel values of a color in an array. Each
+ *   channel will be in the range 0 to 0xff.
+ * @memberOf Color
+ * @param {Number|String|Color} input Input color
+ * @return {Number[]} CMYK color array
+ */
+Color.getCMYArray = function (input) {
+	var arr = Color.getRGBArray(input);
+	var c = CHANNEL_MAX - arr[R];
+	var m = CHANNEL_MAX - arr[G];
+	var y = CHANNEL_MAX - arr[B];
+	return [c, m, y];
+};
+
+/**
+ * Get the cyan, magenta, yellow and key channel values of a color in an array.
+ *   Each channel will be in the range 0 to 0xff.
+ * @memberOf Color
+ * @param {Number|String|Color} input Input color
+ * @return {Number[]} CMYK color array
+ */
+Color.getCMYKArray = function (input) {
+	var arr = Color.getCMYArray(input);
+	var c = arr[0], m = arr[1], y = arr[2];
+	var k = min(c, m, y);
+	if (k === CHANNEL_MAX) {
+		c = m = y = 0;
+	}
+	else {
+		c = (c - k) / (CHANNEL_MAX - k) * CHANNEL_MAX;
+		m = (m - k) / (CHANNEL_MAX - k) * CHANNEL_MAX;
+		y = (y - k) / (CHANNEL_MAX - k) * CHANNEL_MAX;
+	}
+	return [c, m, y, k];
+};
+
+/**
  * Get the hue, saturation and lightness values of a color in an array. The hue
  *   value will be in the range 0 to 360. Both the saturation and lightness
  *   values will be between 0 and 1.
