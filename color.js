@@ -1261,6 +1261,32 @@ Color.distance = function (left, right) {
 };
 
 /**
+ * Get the keyword which is closest in RGB value to the input. Measures distance
+ *   using `Color.distanceSquared()`.
+ * @memberOf Color
+ * @param {Number|String|Color} input Input color
+ * @return {String} Color keyword in lower case
+ */
+Color.getClosestKeyword = function (input) {
+	input = Color.parse(input);
+	var keywords = Object.keys(Color.KEYWORDS);
+	var closestKeyword = null;
+	var closestDistance = Infinity;
+	var currentKeyword, currentColor, currentDistance;
+	for (var i = 0; i < keywords.length; i++) {
+		currentKeyword = keywords[i];
+		currentColor = Color.KEYWORDS[currentKeyword];
+		currentDistance = Color.distanceSquared(input, currentColor);
+		if (currentDistance < closestDistance) {
+			closestKeyword = currentKeyword;
+			closestDistance = currentDistance;
+		}
+	}
+	var result = closestKeyword ? closestKeyword.toLowerCase() : null;
+	return result;
+};
+
+/**
  * Get the numeric value of this color.
  * @memberOf Color
  * @return {Number} Numeric value
