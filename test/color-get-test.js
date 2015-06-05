@@ -73,3 +73,17 @@ QUnit.test('can get correct color', function (assert) {
 	assert.equal(Color.getContrastingColor(0xcc00cc), Color.MAX);
 	assert.equal(Color.getContrastingColor(0xcc6666), Color.MIN);
 });
+
+QUnit.module('Color.getCMYKArray()');
+
+QUnit.test('can get correct values', function (assert) {
+	// Values from http://www.rapidtables.com/convert/color/rgb-to-cmyk.htm
+	assert.deepEqual(Color.getCMYKArray(0x000000), [0x00, 0x00, 0x00, 0xff]);
+	assert.deepEqual(Color.getCMYKArray(0xffffff), [0x00, 0x00, 0x00, 0x00]);
+	assert.deepEqual(Color.getCMYKArray(0xff0000), [0x00, 0xff, 0xff, 0x00]);
+	assert.deepEqual(Color.getCMYKArray(0x00ff00), [0xff, 0x00, 0xff, 0x00]);
+	assert.deepEqual(Color.getCMYKArray(0x0000ff), [0xff, 0xff, 0x00, 0x00]);
+	assert.deepEqual(Color.getCMYKArray(0xffff00), [0x00, 0x00, 0xff, 0x00]);
+	assert.deepEqual(Color.getCMYKArray(0x00ffff), [0xff, 0x00, 0x00, 0x00]);
+	assert.deepEqual(Color.getCMYKArray(0xff00ff), [0x00, 0xff, 0x00, 0x00]);
+});
