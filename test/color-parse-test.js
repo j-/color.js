@@ -148,3 +148,17 @@ QUnit.test('can parse keyword', function (assert) {
 });
 
 })();
+
+QUnit.module('Color.parseCMYKArray()');
+
+QUnit.test('can get correct values', function (assert) {
+	// Values from http://www.rapidtables.com/convert/color/rgb-to-cmyk.htm
+	assert.deepEqual(Color.parseCMYKArray([0x00, 0x00, 0x00, 0xff]), 0x000000);
+	assert.deepEqual(Color.parseCMYKArray([0x00, 0x00, 0x00, 0x00]), 0xffffff);
+	assert.deepEqual(Color.parseCMYKArray([0x00, 0xff, 0xff, 0x00]), 0xff0000);
+	assert.deepEqual(Color.parseCMYKArray([0xff, 0x00, 0xff, 0x00]), 0x00ff00);
+	assert.deepEqual(Color.parseCMYKArray([0xff, 0xff, 0x00, 0x00]), 0x0000ff);
+	assert.deepEqual(Color.parseCMYKArray([0x00, 0x00, 0xff, 0x00]), 0xffff00);
+	assert.deepEqual(Color.parseCMYKArray([0xff, 0x00, 0x00, 0x00]), 0x00ffff);
+	assert.deepEqual(Color.parseCMYKArray([0x00, 0xff, 0x00, 0x00]), 0xff00ff);
+});
