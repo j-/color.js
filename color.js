@@ -829,6 +829,28 @@ Color.getCMYKArray = function (input) {
 };
 
 /**
+ * Get the X, Y and Z channel values of a color in an array. Each channel will
+ *   be in the range 0 to 100.
+ * @memberOf Color
+ * @see http://www.easyrgb.com/index.php?X=MATH&H=02#text2
+ * @param {Number|String|Color} input Input color
+ * @return {Number[]} XYZ color array
+ */
+Color.getXYZArray = function (input) {
+	var arr = Color.getRGBArray(input);
+	var r = arr[R] / CHANNEL_MAX;
+	var g = arr[G] / CHANNEL_MAX;
+	var b = arr[B] / CHANNEL_MAX;
+	r = (r > 0.04045) ? pow((r + 0.055) / 1.055, 2.4) : (r / 12.92);
+	g = (g > 0.04045) ? pow((g + 0.055) / 1.055, 2.4) : (g / 12.92);
+	b = (b > 0.04045) ? pow((b + 0.055) / 1.055, 2.4) : (b / 12.92);
+	var x = 41.24 * r + 35.76 * g + 18.05 * b;
+	var y = 21.26 * r + 71.52 * g +  7.22 * b;
+	var z =  1.93 * r + 11.92 * g + 95.05 * b;
+	return [x, y, z];
+};
+
+/**
  * Get the hue, saturation and lightness values of a color in an array. The hue
  *   value will be in the range 0 to 360. Both the saturation and lightness
  *   values will be between 0 and 1.
