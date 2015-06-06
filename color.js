@@ -858,6 +858,22 @@ Color.getXYZArray = function (input) {
 };
 
 /**
+ * Get the Y, x and y channel values of a color in an array.
+ * @memberOf Color
+ * @see http://www.easyrgb.com/index.php?X=MATH&H=02#text3
+ * @param {Number|String|Color} input Input color
+ * @return {Number[]} Yxy color array
+ */
+Color.getYxyArray = function (input) {
+	var arr = Color.getXYZArray(input);
+	var X = arr[0], Y = arr[1], Z = arr[2];
+	var total = X + Y + Z;
+	var x = X / total;
+	var y = Y / total;
+	return [Y, x, y];
+};
+
+/**
  * Get the Hunter-Lab values of a color in an array.
  * @memberOf Color
  * @see http://www.easyrgb.com/index.php?X=MATH&H=05#text5
