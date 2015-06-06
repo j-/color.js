@@ -868,6 +868,27 @@ Color.getHunterLabArray = function (input) {
 };
 
 /**
+ * Get the CIE-L*ab values of a color in an array.
+ * @memberOf Color
+ * @see http://www.easyrgb.com/index.php?X=MATH&H=07#text7
+ * @param {Number|String|Color} input Input color
+ * @return {Number[]} CIE-L*ab color array
+ */
+Color.getCIELabArray = function (input) {
+	var arr = Color.getXYZArray(input);
+	var x = arr[0] / 95.047;
+	var y = arr[1] / 100;
+	var z = arr[2] / 108.883;
+	x = (x > 0.008856) ? pow(x, 1 / 3) : (7.787 * x + 16 / 116);
+	y = (y > 0.008856) ? pow(y, 1 / 3) : (7.787 * y + 16 / 116);
+	z = (z > 0.008856) ? pow(z, 1 / 3) : (7.787 * z + 16 / 116);
+	var l = 116 * y - 16;
+	var a = 500 * (x - y);
+	var b = 200 * (y - z);
+	return [l, a, b];
+};
+
+/**
  * Get the hue, saturation and lightness values of a color in an array. The hue
  *   value will be in the range 0 to 360. Both the saturation and lightness
  *   values will be between 0 and 1.
