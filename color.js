@@ -22,6 +22,13 @@ var def = function (obj, properties, value) {
 var min = Math.min, max = Math.max;
 var ceil = Math.ceil, floor = Math.floor, round = Math.round;
 var random = Math.random, pow = Math.pow, sqrt = Math.sqrt;
+var abs = Math.abs, atan = Math.atan;
+var PI = Math.PI;
+
+// cache common calculations
+const VAL_1_OVER_3 = 1 / 3;
+const VAL_16_OVER_116 = 16 / 116;
+const VAL_180_OVER_PI = 180 / PI;
 
 /**
  * Module for processing and manipulating colors. Accepts numeric and string
@@ -879,13 +886,29 @@ Color.getCIELabArray = function (input) {
 	var x = arr[0] / 95.047;
 	var y = arr[1] / 100;
 	var z = arr[2] / 108.883;
-	x = (x > 0.008856) ? pow(x, 1 / 3) : (7.787 * x + 16 / 116);
-	y = (y > 0.008856) ? pow(y, 1 / 3) : (7.787 * y + 16 / 116);
-	z = (z > 0.008856) ? pow(z, 1 / 3) : (7.787 * z + 16 / 116);
+	x = (x > 0.008856) ? pow(x, VAL_1_OVER_3) : (7.787 * x + VAL_16_OVER_116);
+	y = (y > 0.008856) ? pow(y, VAL_1_OVER_3) : (7.787 * y + VAL_16_OVER_116);
+	z = (z > 0.008856) ? pow(z, VAL_1_OVER_3) : (7.787 * z + VAL_16_OVER_116);
 	var l = 116 * y - 16;
 	var a = 500 * (x - y);
 	var b = 200 * (y - z);
 	return [l, a, b];
+};
+
+/**
+ * Get the CIE-L*CH values of a color in an array.
+ * @memberOf Color
+ * @see http://www.easyrgb.com/index.php?X=MATH&H=09#text9
+ * @param {Number|String|Color} input Input color
+ * @return {Number[]} CIE-L*CH color array
+ */
+Color.getCIELCHArray = function (input) {
+	var arr = Color.getCIELabArray(input);
+	var l = arr[0], a = arr[1], b = arr[2];
+	var h = atan(b, a);
+	h = (h > 0) ? (h * VAL_180_OVER_PI) : (360 - abs(h) * VAL_180_OVER_PI);
+	var c = sqrt(pow(a, 2) + pow(b, 2));
+	return [l, c, h];
 };
 
 /**
