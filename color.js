@@ -851,6 +851,23 @@ Color.getXYZArray = function (input) {
 };
 
 /**
+ * Get the Hunter-Lab values of a color in an array.
+ * @memberOf Color
+ * @see http://www.easyrgb.com/index.php?X=MATH&H=05#text5
+ * @param {Number|String|Color} input Input color
+ * @return {Number[]} Hunter-Lab color array
+ */
+Color.getHunterLabArray = function (input) {
+	var arr = Color.getXYZArray(input);
+	var x = arr[0], y = arr[1], z = arr[2];
+	var sqrtY = sqrt(y);
+	var l = 10 * sqrtY;
+	var a = 17.5 * ((1.02 * x) - y) / sqrtY;
+	var b = 7 * (y - (0.847 * z)) / sqrtY;
+	return [l, a, b];
+};
+
+/**
  * Get the hue, saturation and lightness values of a color in an array. The hue
  *   value will be in the range 0 to 360. Both the saturation and lightness
  *   values will be between 0 and 1.
