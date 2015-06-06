@@ -655,9 +655,9 @@ Color.parseKeyword = function (input) {
  */
 Color.parseCMYArray = function (arr) {
 	var c = arr[C], m = arr[M], y = arr[Y];
-	var r = CHANNEL_MAX - c;
-	var g = CHANNEL_MAX - m;
-	var b = CHANNEL_MAX - y;
+	var r = ((100 - c) / 100) * CHANNEL_MAX;
+	var g = ((100 - m) / 100) * CHANNEL_MAX;
+	var b = ((100 - y) / 100) * CHANNEL_MAX;
 	var value = Color.parseRGBArray([r, g, b]);
 	return value;
 };
@@ -815,7 +815,7 @@ Color.getCMYArray = function (input) {
 
 /**
  * Get the cyan, magenta, yellow and key channel values of a color in an array.
- *   Each channel will be in the range 0 to 0xff.
+ *   Each channel will be in the range 0 to 100.
  * @memberOf Color
  * @param {Number|String|Color} input Input color
  * @return {Number[]} CMYK color array
@@ -828,10 +828,11 @@ Color.getCMYKArray = function (input) {
 		c = m = y = 0;
 	}
 	else {
-		c = (c - k) / (CHANNEL_MAX - k) * CHANNEL_MAX;
-		m = (m - k) / (CHANNEL_MAX - k) * CHANNEL_MAX;
-		y = (y - k) / (CHANNEL_MAX - k) * CHANNEL_MAX;
+		c = (c - k) / (CHANNEL_MAX - k) * 100;
+		m = (m - k) / (CHANNEL_MAX - k) * 100;
+		y = (y - k) / (CHANNEL_MAX - k) * 100;
 	}
+	k = (k / CHANNEL_MAX) * 100;
 	return [c, m, y, k];
 };
 
