@@ -836,8 +836,7 @@ Color.getCMYKArray = function (input) {
 };
 
 /**
- * Get the X, Y and Z channel values of a color in an array. Each channel will
- *   be in the range 0 to 100.
+ * Get the X, Y and Z channel values of a color in an array.
  * @memberOf Color
  * @see http://www.easyrgb.com/index.php?X=MATH&H=02#text2
  * @param {Number|String|Color} input Input color
